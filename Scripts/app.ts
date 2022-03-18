@@ -254,22 +254,25 @@
 
     }
 
-
-    function DisplayContactListPage() :  void
+    function DisplayContactListPage(): void
     {
+        console.log("Contact-List Page");
 
-
-        if(localStorage.length > 0) //check if local storage has something in it
+        if(localStorage.length > 0) // check if localStorage has something in it 
         {
             let contactList = document.getElementById("contactList") as HTMLElement;
+
             let data = "";
+
             let keys = Object.keys(localStorage);
 
             let index = 1;
 
-            for(const key of keys) 
+            //for every key in the keys collection loop
+            for(const key of keys)
             {
-                let contactData = localStorage.getItem(key) as string; // retrieve contact data from localstorage
+                let contactData = localStorage.getItem(key) as string; // retrieve contact data from localStorage
+
                 let contact = new core.Contact(); // create an empty Contact Object
                 contact.deserialize(contactData);
 
@@ -282,31 +285,34 @@
                 <td class="text-center"><button value="${key}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash-alt fa-sm"></i> Delete</button></td>
                 </tr>
                 `;
-
-                index ++;
+                
+                index++;
             }
+
             contactList.innerHTML = data;
 
-            $("#addButton").on("click", () =>
+            
+            $("button.delete").on("click", function()
             {
-                LoadLink("edit", "add");
-            });
-
-            $("button.delete").on("click", function() 
-            {
-                if(confirm("Are you sure?")) {
-                localStorage.removeItem($(this).val() as string);
+                if(confirm("Are you sure?"))
+                {
+                    localStorage.removeItem($(this).val() as string);
                 }
+                
                 LoadLink("contact-list");
             });
 
-
-            $("button.edit").on("click", function ()
+            $("button.edit").on("click", function() 
             {
-                LoadLink("edit", $(this).val() as string);
+                LoadLink("edit", $(this).val() as string );
             });
-
         }
+
+        $("#addButton").on("click", () =>
+            {
+                LoadLink("edit", "add");
+        });
+
     }
 
 

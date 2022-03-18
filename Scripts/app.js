@@ -135,6 +135,7 @@
         });
     }
     function DisplayContactListPage() {
+        console.log("Contact-List Page");
         if (localStorage.length > 0) {
             let contactList = document.getElementById("contactList");
             let data = "";
@@ -156,9 +157,6 @@
                 index++;
             }
             contactList.innerHTML = data;
-            $("#addButton").on("click", () => {
-                LoadLink("edit", "add");
-            });
             $("button.delete").on("click", function () {
                 if (confirm("Are you sure?")) {
                     localStorage.removeItem($(this).val());
@@ -169,6 +167,9 @@
                 LoadLink("edit", $(this).val());
             });
         }
+        $("#addButton").on("click", () => {
+            LoadLink("edit", "add");
+        });
     }
     function DisplayEditPage() {
         console.log("Edit Page");
