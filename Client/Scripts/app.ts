@@ -232,7 +232,7 @@
     function DisplayRegisterPage() : void
     {
         console.log("register page");
-        //TODO: Future work - add some validation
+        //TODO: Future work  - add some validation
 
     }
 
