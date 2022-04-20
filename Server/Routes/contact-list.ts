@@ -1,31 +1,40 @@
-import express from 'express';
-const router = express.Router();
+/*
+  Name: Ethan Bentolila
+  ID: 100783477
 
+  Name: Marshall Presutto
+  ID: 100775601
+
+  Date: 2022-04-15
+*/
+
+import express from 'express';
+import { DisplayAddPage, DisplayBusinessContactPage, DisplayEditPage, ProcessAddPage, ProcessDeletePage, ProcessEditPage } from '../controllers/contact-list';
+const router = express.Router();
 import {AuthGuard} from '../Util/index';
 
-import {DisplayAddPage, DisplayContactListPage, DisplayEditPage, ProcessAddPage, ProcessDeletePage, ProcessEditPage} from '../Controllers/contact-list';
 
-router.get('/contact-list', AuthGuard, DisplayContactListPage);
+/* GET contact-list page. */
+router.get('/business-contact-list', AuthGuard, DisplayBusinessContactPage);
 
 
 /* Display the Add page. */
 router.get('/add', AuthGuard, DisplayAddPage);
 
-
-/* Prrocess the Add request */
-router.post('/add', AuthGuard, ProcessAddPage);
-
-
-/* Display the Edit page with data from DB */
-router.get('/edit/:id', AuthGuard, DisplayEditPage);
+/* Create*/
+router.post('/add', AuthGuard, ProcessAddPage); 
 
 
-/* Process the Edit request */
+/* Retrieve */
+router.get('/edit/:id', AuthGuard, DisplayEditPage); 
+
+
+/* Update */
 router.post('/edit/:id', AuthGuard, ProcessEditPage);
 
+/* Delete */
+router.get('/delete/:id', AuthGuard, ProcessDeletePage); 
 
-/* Process the delete request */
-router.get('/delete/:id', AuthGuard, ProcessDeletePage);
 
 
 export default router;

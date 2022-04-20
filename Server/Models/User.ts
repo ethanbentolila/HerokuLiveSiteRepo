@@ -1,3 +1,14 @@
+/*
+  Name: Ethan Bentolila
+  ID: 100783477
+
+  Name: Marshall Presutto
+  ID: 100775601
+
+  Date: 2022-04-15
+*/
+
+
 import mongoose, { PassportLocalSchema } from 'mongoose';
 const Schema = mongoose.Schema; // alias for mongoose.Schema
 import passportLocalMongoose from 'passport-local-mongoose';
@@ -19,7 +30,7 @@ const UserSchema = new Schema
     }
 },
 {
-    collection: "users"
+    collection: "lab4users"
 });
 
 UserSchema.plugin(passportLocalMongoose);
@@ -32,7 +43,7 @@ declare global
     {
         _id: String,
         DisplayName: String,
-        username: String,
+        Username: String,
         EmailAddress: String
     }
 }

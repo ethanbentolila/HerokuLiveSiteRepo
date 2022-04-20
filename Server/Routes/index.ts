@@ -1,16 +1,26 @@
+/*
+  Name: Ethan Bentolila
+  ID: 100783477
+
+  Name: Marshall Presutto
+  ID: 100775601
+
+  Date: 2022-04-15
+*/
+
+
 import express from 'express';
+import { DisplayAboutPage, DisplayContactPage, DisplayHomePage, DisplayProjectsPage, DisplayServicesPage } from '../controllers';
 const router = express.Router();
 
-//Controller instance
-import {DisplayAboutPage, DisplayContactPage, DisplayHomePage, DisplayProductsPage, DisplayServicesPage } from '../Controllers/index';
 
 
-/**********************TOP LEVEL ROUTES************************************** */
+
 router.get('/', DisplayHomePage);
 
-/* GET home page. */
-router.get('/home', DisplayHomePage);
 
+/* GET home page. */
+router.get('/home', DisplayHomePage); 
 
 /* GET about page. */
 router.get('/about', DisplayAboutPage);
@@ -20,11 +30,11 @@ router.get('/about', DisplayAboutPage);
 router.get('/services', DisplayServicesPage);
 
 
+/* GET projects page. */
+router.get('/projects', DisplayProjectsPage);
+
+
 /* GET products page. */
-router.get('/products', DisplayProductsPage); 
-
-
-/* GET contacts page. */
 router.get('/contact', DisplayContactPage);
 
 

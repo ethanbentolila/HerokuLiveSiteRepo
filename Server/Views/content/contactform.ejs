@@ -1,0 +1,52 @@
+
+
+
+
+
+<div class="container">
+    <h1>Contact Form</h1>
+    <!-- Message Area -->
+    <% if(messages.length > 0) { %>
+        <div id="messageArea" class="alert alert-success">
+            <%= messages %>
+        </div>
+        <% } %>
+
+
+<div class="row justify-content-lg-center g-3">
+    <form method = "POST" class="form col-lg-6 col-md-10 col-sm-10">
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Full Name</span>
+            <input id="fullName"name="fullName" type="text" class="form-control"  
+             required>
+        </div>
+            
+        <div class="input-group mb-3">
+            <span class="input-group-text">Phone Number</span>
+            <input id="phoneNumber"name="phoneNumber" type="tel" class="form-control"  
+             required>
+        </div>
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text">Email address</span>
+            <input id="emailAddress"name="emailAddress" type="email" class="form-control"  
+            aria-describedby="Email Address Input" aria-label="Email Address" required>
+        </div>
+            
+        <div class="input-group mb-3">
+            <span class="input-group-text">Your Message</span>
+            <textarea id="message"name="message" type="text" class="form-control"  
+             required> </textarea>
+        </div>
+
+    
+        <button id="sendButton" type="submit" class="btn btn-dark"><i class="fas fa-envelope fa-lg"></i> Send</button>
+        <button id="canelButton" type="reset" class="btn btn-warning"><i class="fas fa-undo fa-lg"></i> Cancel</button>
+        </form>
+    
+        <div class="col-lg-4 col-md-4">
+            <a href="/inquiries-list" class="btn btn-dark btn-lg link"><i class="fas fa-solid fa-book"></i> View Inquiries</a>
+        </div>
+    </div>
+</div>

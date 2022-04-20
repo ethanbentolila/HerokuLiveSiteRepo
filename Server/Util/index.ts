@@ -1,8 +1,17 @@
+/*
+  Name: Ethan Bentolila
+  ID: 100783477
+
+  Name: Marshall Presutto
+  ID: 100775601
+
+  Date: 2022-04-15
+*/
+
+
 import express, {Request,Response, NextFunction} from 'express';
 
-//enable jwt
-import jwt from 'jsonwebtoken';
-import * as DBConfig from '../Config/db';
+export let CorrectAuthGuardPath = 'business-contact-list';
 
 export function UserDisplayName(req: Request): string
 {
@@ -16,6 +25,7 @@ export function UserDisplayName(req: Request): string
 
 export function AuthGuard(req: Request, Res: Response, next : NextFunction): void
 {
+    CorrectAuthGuardPath =req.route.path;
     if(!req.isAuthenticated())
     {
         return Res.redirect('/login');
@@ -24,20 +34,7 @@ export function AuthGuard(req: Request, Res: Response, next : NextFunction): voi
 }
 
 
-export function GenerateToken(user: UserDocument): string
+export function DefaultAuthguardRoute() : void
 {
-    const payload =
-    {
-        id: user._id,
-        DisplayName: user.DisplayName,
-        EmailAddress: user.EmailAddress,
-        username: user.username
-    }
-
-    const jwtOptions =
-    {
-        expiresIn: 604800 // 1 week
-    }
-
-    return jwt.sign(payload, DBConfig.SessionSecret, jwtOptions);
+    CorrectAuthGuardPath = 'business-contact-list';
 }

@@ -1,38 +1,48 @@
+/*
+  Name: Ethan Bentolila
+  ID: 100783477
+
+  Name: Marshall Presutto
+  ID: 100775601
+
+  Date: 2022-04-15
+*/
 import express, {Request,Response,NextFunction} from 'express';
 import passport from 'passport';
-
 import User from '../Models/User';
-import {GenerateToken, UserDisplayName} from '../Util/index';
+import { UserDisplayName, CorrectAuthGuardPath} from '../Util/index';
 
 
-//Display Pages
-
-export function DisplayLoginPage(req: Request, res: Response , next : NextFunction) : void
+//Display pages
+export function DisplayLoginPage(req: Request, res: Response, next : NextFunction) : void
 {
     if(!req.user)
     {
       return res.render('index', 
         { title: 'Login', page: 'login', messages: req.flash('loginMessage'), displayName: UserDisplayName(req) });
     }
-    return res.redirect('/contact-list');
+    return res.redirect('/login');
 }
 
-export function DisplayRegisterPage(req: Request, res: Response , next : NextFunction) : void
+export function DisplayRegisterPage(req: Request, res: Response, next : NextFunction) : void
 {
     if(!req.user)
     {
     return res.render('index', 
       { title: 'Register', page: 'register', messages: req.flash('registerMessage'), displayName: UserDisplayName(req) });
     }
-    return res.redirect('/contact-list');
+    return res.redirect('/business-contact-list');
 }
 
 
 
+
+
+
+
+
 //Process Pages
-
-
-export function ProcessLoginPage(req: Request, res: Response , next : NextFunction) : void
+export function ProcessLoginPage(req: Request, res: Response, next : NextFunction) : void
 {
     passport.authenticate('local', function(err, user, info)
     {
@@ -59,18 +69,14 @@ export function ProcessLoginPage(req: Request, res: Response , next : NextFuncti
           res.end(err);
         }
   
-        const authToken = GenerateToken(user);
-        //return res.json({success: true, msg: 'User Logged In Successfully!', user :user, token: authToken});
-
-
-        return res.redirect('/contact-list');
+        return res.redirect(CorrectAuthGuardPath);
       });
     })(req, res, next);
 }
 
-export function ProcessRegisterPage(req: Request, res: Response , next : NextFunction) : void
+export function ProcessRegisterPage(req: Request, res: Response, next : NextFunction) : void
 {
-      // instantiate a new user object
+  // instantiate a new user object
   let newUser = new User
   ({
     username: req.body.username,
@@ -96,12 +102,12 @@ export function ProcessRegisterPage(req: Request, res: Response , next : NextFun
     // automatically login the user
     return passport.authenticate('local')(req, res, ()=>
     {
-      return res.redirect('/contact-list');
+      return res.redirect('/business-contact-list');
     });
   });
 }
 
-export function ProcesslogoutPage(req: Request, res: Response , next : NextFunction) : void
+export function ProcessLogoutPage(req: Request, res: Response, next : NextFunction) : void
 {
     req.logOut();
 

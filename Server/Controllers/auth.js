@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProcesslogoutPage = exports.ProcessRegisterPage = exports.ProcessLoginPage = exports.DisplayRegisterPage = exports.DisplayLoginPage = void 0;
+exports.ProcessLogoutPage = exports.ProcessRegisterPage = exports.ProcessLoginPage = exports.DisplayRegisterPage = exports.DisplayLoginPage = void 0;
 const passport_1 = __importDefault(require("passport"));
 const User_1 = __importDefault(require("../Models/User"));
 const index_1 = require("../Util/index");
@@ -11,14 +11,14 @@ function DisplayLoginPage(req, res, next) {
     if (!req.user) {
         return res.render('index', { title: 'Login', page: 'login', messages: req.flash('loginMessage'), displayName: (0, index_1.UserDisplayName)(req) });
     }
-    return res.redirect('/contact-list');
+    return res.redirect('/login');
 }
 exports.DisplayLoginPage = DisplayLoginPage;
 function DisplayRegisterPage(req, res, next) {
     if (!req.user) {
         return res.render('index', { title: 'Register', page: 'register', messages: req.flash('registerMessage'), displayName: (0, index_1.UserDisplayName)(req) });
     }
-    return res.redirect('/contact-list');
+    return res.redirect('/business-contact-list');
 }
 exports.DisplayRegisterPage = DisplayRegisterPage;
 function ProcessLoginPage(req, res, next) {
@@ -36,8 +36,7 @@ function ProcessLoginPage(req, res, next) {
                 console.error(err);
                 res.end(err);
             }
-            const authToken = (0, index_1.GenerateToken)(user);
-            return res.redirect('/contact-list');
+            return res.redirect(index_1.CorrectAuthGuardPath);
         });
     })(req, res, next);
 }
@@ -60,14 +59,14 @@ function ProcessRegisterPage(req, res, next) {
             return res.redirect('/register');
         }
         return passport_1.default.authenticate('local')(req, res, () => {
-            return res.redirect('/contact-list');
+            return res.redirect('/business-contact-list');
         });
     });
 }
 exports.ProcessRegisterPage = ProcessRegisterPage;
-function ProcesslogoutPage(req, res, next) {
+function ProcessLogoutPage(req, res, next) {
     req.logOut();
     res.redirect('/login');
 }
-exports.ProcesslogoutPage = ProcesslogoutPage;
+exports.ProcessLogoutPage = ProcessLogoutPage;
 //# sourceMappingURL=auth.js.map

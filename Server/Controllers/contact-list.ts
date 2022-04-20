@@ -1,14 +1,24 @@
+/*
+  Name: Ethan Bentolila
+  ID: 100783477
+
+  Name: Marshall Presutto
+  ID: 100775601
+
+  Date: 2022-04-15
+*/
+
 import express, {Request,Response,NextFunction} from 'express';
-import Contact from '../Models/contact';
+import BusinessContact from '../Models/BusinessContact';
 import {UserDisplayName} from '../Util/index';
 
 
 
-//Display Pages
-export function DisplayContactListPage(req: Request, res: Response, next : NextFunction) : void
+//Display pages
+export function DisplayBusinessContactPage(req: Request, res: Response, next : NextFunction) : void
 {
-      // R - Read
-  Contact.find(function(err, contactList)
+  // R - Read
+  BusinessContact.find(function(err, contactList)
   {
     if(err)
     {
@@ -16,15 +26,14 @@ export function DisplayContactListPage(req: Request, res: Response, next : NextF
       res.end();
     }
 
-    res.render('index', { title: 'Contact List', page: 'contact-list', contacts: contactList, displayName: UserDisplayName(req) });
+    res.render('index', { title: 'Business Contact List', page: 'business-contact-list', contacts: contactList, displayName: UserDisplayName(req) });
   });
-
 }
 
 export function DisplayAddPage(req: Request, res: Response, next : NextFunction) : void
 {
     res.render('index', { title: 'Add', page: 'edit', contact: '', displayName: UserDisplayName(req) });
- 
+
 }
 
 export function DisplayEditPage(req: Request, res: Response, next : NextFunction) : void
@@ -32,7 +41,7 @@ export function DisplayEditPage(req: Request, res: Response, next : NextFunction
     let id = req.params.id;
 
     // pass the id to the db and read the contact in
-    Contact.findById(id, {}, {}, function(err, contactToEdit)
+    BusinessContact.findById(id, {}, {}, function(err, contactToEdit)
     {
       if(err)
       {
@@ -42,22 +51,23 @@ export function DisplayEditPage(req: Request, res: Response, next : NextFunction
   
       // show the edit view with the data
       res.render('index', { title: 'Edit', page: 'edit', contact: contactToEdit, displayName: UserDisplayName(req) });
-    }); 
+    });  
 }
 
 //Process Pages
+
 export function ProcessAddPage(req: Request, res: Response, next : NextFunction) : void
 {
   // instantiate a new contact to add
-  let newContact = new Contact
+  let newContact = new BusinessContact
   ({
-    "FullName": req.body.fullName,
+    "ContactName": req.body.fullName,
     "ContactNumber": req.body.contactNumber,
-    "EmailAddress": req.body.emailAddress
+    "ContactEmail": req.body.emailAddress
   });
 
   // db.contacts.insert
-  Contact.create(newContact, function(err)
+  BusinessContact.create(newContact, function(err)
   {
     if(err)
     {
@@ -65,7 +75,7 @@ export function ProcessAddPage(req: Request, res: Response, next : NextFunction)
       res.end(err);
     }
     // newContact has been added to the db -> now go back to the contact-list
-    res.redirect('/contact-list');
+    res.redirect('/business-contact-list');
   });
 }
 
@@ -74,34 +84,29 @@ export function ProcessEditPage(req: Request, res: Response, next : NextFunction
     let id = req.params.id;
 
     // instantiate a new contact to edit
-    let updatedContact = new Contact
+    let updatedContact = new BusinessContact
     ({
       "_id": id,
-      "FullName": req.body.fullName,
+      "ContactName": req.body.fullName,
       "ContactNumber": req.body.contactNumber,
-      "EmailAddress": req.body.emailAddress
+      "ContactEmail": req.body.emailAddress
     });
-  
-    // db.contacts.update({"_id":id}, update info...)
-    Contact.updateOne({_id:id}, updatedContact, function(err: ErrorCallback)
+    BusinessContact.updateOne({_id:id}, updatedContact, function(err: ErrorCallback)
     {
       if(err)
       {
         console.error(err);
         res.end(err);
       }
-  
       // the edit was successful -> go back to the contact-list
-      res.redirect('/contact-list');
-    });
+      res.redirect('/business-contact-list');
+    });  
 }
 
 export function ProcessDeletePage(req: Request, res: Response, next : NextFunction) : void
 {
     let id = req.params.id;
-
-    // db.contacts.remove({"_id":id})
-    Contact.remove({_id: id}, function(err)
+    BusinessContact.remove({_id: id}, function(err)
     {
       if(err)
       {
@@ -110,6 +115,7 @@ export function ProcessDeletePage(req: Request, res: Response, next : NextFuncti
       }
   
       // delete was successful -> go back to the contact-list
-      res.redirect('/contact-list');
-    }); 
+      res.redirect('/business-contact-list');
+    });
+
 }

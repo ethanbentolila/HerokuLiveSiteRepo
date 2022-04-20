@@ -36,15 +36,12 @@ const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const connect_flash_1 = __importDefault(require("connect-flash"));
-const cors_1 = __importDefault(require("cors"));
-const passport_jwt_1 = __importDefault(require("passport-jwt"));
-let JWTStrategy = passport_jwt_1.default.Strategy;
-let ExtractJWT = passport_jwt_1.default.ExtractJwt;
 let localStrategy = passport_local_1.default.Strategy;
 const User_1 = __importDefault(require("../Models/User"));
 const index_1 = __importDefault(require("../Routes/index"));
 const auth_1 = __importDefault(require("../Routes/auth"));
 const contact_list_1 = __importDefault(require("../Routes/contact-list"));
+const inquiries_list_1 = __importDefault(require("../Routes/inquiries-list"));
 const app = (0, express_1.default)();
 const DBConfig = __importStar(require("./db"));
 mongoose_1.default.connect(DBConfig.RemoteURI);
@@ -61,23 +58,8 @@ app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.static(path_1.default.join(__dirname, '../../Client')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../../Public')));
 app.use(express_1.default.static(path_1.default.join(__dirname, '../../node_modules')));
-app.use((0, cors_1.default)());
-let jwtOptions = {
-    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: DBConfig.SessionSecret
-};
-let strategy = new JWTStrategy(jwtOptions, function (jwt_payload, done) {
-    User_1.default.findById(jwt_payload.id)
-        .then(user => {
-        return done(null, user);
-    })
-        .catch(err => {
-        return done(err, false);
-    });
-});
-passport_1.default.use(strategy);
 app.use((0, express_session_1.default)({
     secret: DBConfig.SessionSecret,
     saveUninitialized: false,
@@ -92,16 +74,15 @@ passport_1.default.deserializeUser(User_1.default.deserializeUser());
 app.use('/', index_1.default);
 app.use('/', auth_1.default);
 app.use('/', contact_list_1.default);
+app.use('/', inquiries_list_1.default);
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
 });
 app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-    let message = err.message;
-    let error = err;
     res.status(err.status || 500);
-    res.render('error', { message: message, error: error, title: '', page: '', displayName: '' });
+    res.render('error');
 });
 exports.default = app;
 //# sourceMappingURL=app.js.map

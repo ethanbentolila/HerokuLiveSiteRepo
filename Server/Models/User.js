@@ -19,7 +19,7 @@ const UserSchema = new Schema({
         default: Date.now()
     }
 }, {
-    collection: "users"
+    collection: "lab4users"
 });
 UserSchema.plugin(passport_local_mongoose_1.default);
 const Model = mongoose_1.default.model("User", UserSchema);
